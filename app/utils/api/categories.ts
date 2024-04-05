@@ -5,9 +5,10 @@ import { IProduct } from "../interfaces";
 const list = async (): Promise<string[]> => {
   return new Promise(async (res, rej) => {
     try {
-      const categories: string[] = await axios(`${BackendUrl}/categories`);
-      res(categories);
+      const categories = await axios.get(`${BackendUrl}/products/categories`);
+      res(categories.data);
     } catch (error) {
+      console.error(error);
       rej(error);
     }
   });
@@ -16,8 +17,10 @@ const list = async (): Promise<string[]> => {
 const getCatProducts = async (cat: string): Promise<IProduct[]> => {
   return new Promise(async (res, rej) => {
     try {
-      const products: IProduct[] = await axios(`${BackendUrl}/category/${cat}`);
-      res(products);
+      const products = await axios.get(
+        `${BackendUrl}/products/category/${cat}`
+      );
+      res(products.data);
     } catch (error) {
       rej(error);
     }

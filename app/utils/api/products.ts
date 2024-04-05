@@ -7,7 +7,9 @@ const baseUrl = `${BackendUrl}/products`;
 const list = async (payload: IProductListPayload): Promise<IProduct[]> => {
   return new Promise(async (res, rej) => {
     try {
-      let products: IProduct[] = await axios(`${baseUrl}`);
+      let { data: products }: { data: IProduct[] } = await axios.get(
+        `${baseUrl}`
+      );
       // NOTE: this logic should be included in backend (DB query) but we do not have api with sort and search features.
       const { searchQuery, sortByPrice } = payload;
 
@@ -38,8 +40,8 @@ const list = async (payload: IProductListPayload): Promise<IProduct[]> => {
 const index = async (id: string): Promise<IProduct> => {
   return new Promise(async (res, rej) => {
     try {
-      const product: IProduct = await axios(`${baseUrl}/${id}`);
-      res(product);
+      const product = await axios.get(`${baseUrl}/${id}`);
+      res(product.data);
     } catch (error) {
       rej(error);
     }
