@@ -19,3 +19,7 @@ export interface IProductListPayload {
 export interface IAppSlice {
   cart: IProduct[];
 }
+
+export interface IStore {
+  app: IAppSlice;
+}
