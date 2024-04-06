@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -16,7 +17,7 @@ const CatSection = ({ cats }: Props) => {
                 className="flex-shrink-0 border p-2 rounded-md text-gray-600"
                 key={cat}
               >
-                {cat.toUpperCase()}
+                <Link href={`/categories/${cat}`}>{cat.toUpperCase()}</Link>
               </li>
             );
           })}

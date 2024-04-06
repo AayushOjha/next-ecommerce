@@ -1,8 +1,9 @@
 import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { BackButton } from "./BackButton";
 
 type Props = { withBackButton?: boolean };
 
@@ -11,9 +12,7 @@ const Navbar = ({ withBackButton }: Props) => {
     <div className="flex justify-between py-2">
       <div>
         {withBackButton ? (
-          <IconButton>
-            <ArrowBackIcon className="text-slate-600" />
-          </IconButton>
+          <BackButton />
         ) : (
           <IconButton>
             <MenuIcon className="text-slate-600" />
