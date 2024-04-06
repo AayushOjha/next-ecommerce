@@ -9,6 +9,7 @@ import { ProductsApi } from "../utils/api/products";
 import { CircularProgress } from "@mui/material";
 import { Suspense } from "react";
 import QueryString from "qs";
+import Head from "next/head";
 
 function Main() {
   const pathname = usePathname();
@@ -58,73 +59,82 @@ function Main() {
     );
   } else {
     return (
-      <div className="global-page pb-10">
-        <Navbar searchOption={false} />
+      <>
+        <Head>
+          <title>Search ABC store</title>
+          <meta
+            name="description"
+            content={"Pick from largest collection only on ABC"}
+          />
+        </Head>
+        <div className="global-page pb-10">
+          <Navbar searchOption={false} />
 
-        <div className="mb-3">
-          <div className="border mb-1 rounded-md p-1.5 flex gap-1">
-            <SearchIcon />
-            <input
-              type="text"
-              placeholder="search here"
-              className="outline-none flex-1"
-              value={_searchQuery}
-              onKeyDown={({ key }) => {
-                if (key === "Enter") {
-                  updatePageQuery({
-                    searchQuery: _searchQuery,
-                    sortByPrice: _priceSort,
-                  });
-                }
-              }}
-              onChange={({ target: { value } }) => {
-                set_searchQuery(value);
-              }}
-            />
+          <div className="mb-3">
+            <div className="border mb-1 rounded-md p-1.5 flex gap-1">
+              <SearchIcon />
+              <input
+                type="text"
+                placeholder="search here"
+                className="outline-none flex-1"
+                value={_searchQuery}
+                onKeyDown={({ key }) => {
+                  if (key === "Enter") {
+                    updatePageQuery({
+                      searchQuery: _searchQuery,
+                      sortByPrice: _priceSort,
+                    });
+                  }
+                }}
+                onChange={({ target: { value } }) => {
+                  set_searchQuery(value);
+                }}
+              />
+            </div>
+
+            <div className="flex justify-end items-baseline gap-1">
+              <p className="text-gray-600 text-sm font-medium">sort by:</p>
+              <select
+                className="outline-none text-sm font-thin italic text-gray-800"
+                value={_priceSort || "null"}
+                onChange={({ target: { value } }) => {
+                  if (value === "lowToHigh" || value === "highToLow") {
+                    set_priceSort(value);
+                    updatePageQuery({
+                      searchQuery: _searchQuery,
+                      sortByPrice: value,
+                    });
+                  } else {
+                    set_priceSort(undefined);
+                    updatePageQuery({
+                      searchQuery: _searchQuery,
+                      sortByPrice: undefined,
+                    });
+                  }
+                }}
+              >
+                <option value={"null"}>none</option>
+                <option value={"lowToHigh"}>price low to high</option>
+                <option value={"highToLow"}>price high to low</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex justify-end items-baseline gap-1">
-            <p className="text-gray-600 text-sm font-medium">sort by:</p>
-            <select
-              className="outline-none text-sm font-thin italic text-gray-800"
-              value={_priceSort || "null"}
-              onChange={({ target: { value } }) => {
-                if (value === "lowToHigh" || value === "highToLow") {
-                  set_priceSort(value);
-                  updatePageQuery({
-                    searchQuery: _searchQuery,
-                    sortByPrice: value,
-                  });
-                } else {
-                  set_priceSort(undefined);
-                  updatePageQuery({
-                    searchQuery: _searchQuery,
-                    sortByPrice: undefined,
-                  });
-                }
-              }}
-            >
-              <option value={"null"}>none</option>
-              <option value={"lowToHigh"}>price low to high</option>
-              <option value={"highToLow"}>price high to low</option>
-            </select>
-          </div>
+          {products.length ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+              {products.map((prod) => {
+                return (
+                  <div key={prod.id}>
+                    <ProductCard product={prod} />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <h2>No product found</h2>
+          )}
         </div>
-
-        {products.length ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-            {products.map((prod) => {
-              return (
-                <div key={prod.id}>
-                  <ProductCard product={prod} />
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <h2>No product found</h2>
-        )}
-      </div>
+      </>
     );
   }
 }

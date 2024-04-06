@@ -1,9 +1,18 @@
 import { Navbar } from "@/app/components/Navbar";
 import { ProductCard } from "@/app/components/ProductCard";
 import { categoriesApi } from "@/app/utils/api/categories";
+import { Metadata } from "next";
 
 export const revalidate = 60 * 60 * 12; // revalidate this page every 12 hrs
 
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const slug = decodeURIComponent(params.slug);
+
+  return {
+    title: `Best ${slug} collection`,
+    description: `Explore our diverse selection of products in ${slug}. Find quality items for every need and preference. Shop now!`,
+  };
+}
 export default async function Page({ params }: { params: { slug: string } }) {
   const products = await categoriesApi.getCatProducts(params.slug);
 
