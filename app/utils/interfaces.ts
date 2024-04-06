@@ -15,3 +15,7 @@ export interface IProductListPayload {
   sortByPrice?: "highToLow" | "lowToHigh";
   searchQuery?: string;
 }
+
+export interface IAppSlice {
+  cart: IProduct[];
+}

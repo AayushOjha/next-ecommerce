@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import { IProduct, IProductListPayload } from "../utils/interfaces";
 import SearchIcon from "@mui/icons-material/Search";
 import { ProductsApi } from "../utils/api/products";
-import { CircularProgress, InputAdornment, TextField } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import { Suspense } from "react";
 import QueryString from "qs";
 
-export default function Page() {
+function Main() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -126,4 +127,12 @@ export default function Page() {
       </div>
     );
   }
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Main />
+    </Suspense>
+  );
 }
